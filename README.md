@@ -1,12 +1,16 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/DESIFpxz)
 # CS_2024_project
 
 ## Description
 
-Describe the project in 2-3 sentences (You can use more). 
+### Multiplayer Minesweeper
+
+Every new day, a game will be created and anyone can play. \
+The board is "infinite"—new squares are generated as they are discovered. \
+A leaderboard displays how many squares each player has discovered. \
+If someone discovers a mine, they die (cannot play the game anymore, or for a certain period of time), and a crater forms on the board. \
+The players' goal is to discover as many squares as possible, make a minimum of mistakes, and reach the top of the leaderboard.
 
 ## Setup
-
 Describe the steps to set up the environment and run the application. This can be a bash script or docker commands.
 
 ```
