@@ -17,5 +17,7 @@ jobs:
         run: docker build -t server:latest .
       - name: Run docker
         run: docker run -p 5000:5000 -d server:latest
+      - name: Wait
+        run: sleep 3
       - name: run python tests
         run: python ./client.py
