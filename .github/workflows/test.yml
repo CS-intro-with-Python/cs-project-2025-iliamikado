@@ -16,6 +16,6 @@ jobs:
       - name: Build image
         run: docker build -t server:latest .
       - name: Run docker
-        run: docker run server -p 5000:5000
+        run: docker run server:latest -p 5000:5000
       - name: run python tests
         run: python ./client.py
