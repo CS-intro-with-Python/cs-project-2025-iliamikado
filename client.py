@@ -6,7 +6,7 @@ OK, ERR, RST = "\033[32m", "\033[31m", "\033[0m"
 url = "http://localhost:5000"
 
 def test_existing_page():
-    print("Check existing page 'hello'")
+    print("::notice::Check existing page 'hello'")
     resp = requests.get(f"{url}/hello")
     if resp.status_code != 200:
         print(f"{ERR}Response status isn't 200")
@@ -23,7 +23,7 @@ def test_existing_page():
         print(f"{OK}Response content is right{RST}")
 
 def test_unexisting_page():
-    print("Check unexisting page")
+    print("::notice::Check unexisting page")
     resp = requests.get(f"{url}/ssss")
     if resp.status_code != 404:
         print(f"{ERR}Response status isn't 404")
