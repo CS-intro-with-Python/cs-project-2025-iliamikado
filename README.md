@@ -1,5 +1,7 @@
 # CS_2024_project
 
+Deployed on [cs-project-2025-iliamikado-production.up.railway.app](cs-project-2025-iliamikado-production.up.railway.app)
+
 ## Description
 
 ### Multiplayer Minesweeper
