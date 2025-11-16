@@ -10,17 +10,17 @@ A leaderboard displays how many squares each player has discovered. \
 If someone discovers a mine, they die (cannot play the game anymore, or for a certain period of time), and a crater forms on the board. \
 The players' goal is to discover as many squares as possible, make a minimum of mistakes, and reach the top of the leaderboard.
 
-## Setup
+## Setup and run
 Describe the steps to set up the environment and run the application. This can be a bash script or docker commands.
 
 ```
-Your commands
-
+pip install -r requirements.txt
+python ./server.py
 ```
 
 ## Requirements
 
-Describe technologies, libraries, languages you are using (this can be updated in the future).
+requests, Flask
 
 ## Features
 
@@ -30,8 +30,7 @@ Describe the main features the application performs.
 * Feature 2
 
 ## Git
-
-Specify which branch will store the latest stable version of the application
+branch master will store the latest stable version
 
 ## Success Criteria
 
