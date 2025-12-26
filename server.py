@@ -22,6 +22,12 @@ def click():
     x, y = data["x"], data["y"]
     return jsonify(game.open(x, y))
 
+@app.post("/flag")
+def flag():
+    data = request.get_json()
+    x, y = data["x"], data["y"]
+    return jsonify(game.flag(x, y))
+
 @app.post("/reset")
 def reset():
     global game

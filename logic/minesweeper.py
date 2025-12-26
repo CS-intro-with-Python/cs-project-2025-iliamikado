@@ -6,6 +6,7 @@ class Cell:
         self.y = y
         self.mine = False
         self.opened = False
+        self.flag = False
         self.mines_count = 0
 
     def to_json(self):
@@ -14,6 +15,7 @@ class Cell:
             "y": self.y,
             "mine": self.mine,
             "opened": self.opened,
+            "flag": self.flag,
             "mines_count": self.mines_count
         }
 
@@ -52,7 +54,7 @@ class Minesweeper:
         while stack:
             cx, cy = stack.pop()
             cell = self._set_cell(cx, cy)
-            if cell.opened:
+            if cell.opened or cell.flag:
                 continue
             cell.opened = True
             cell.mines_count = self._count_mines(cx, cy)
@@ -62,6 +64,12 @@ class Minesweeper:
                     if (nx, ny) not in opened:
                         stack.append((nx, ny))
         return list(map(lambda c: c.to_json(), opened))
+
+    def flag(self, x, y):
+        cell = self.cells[(x, y)] if (x, y) in self.cells else self._set_cell(x, y)
+        if not cell.opened:
+            cell.flag = not cell.flag
+        return cell.to_json()
 
     def field(self):
         field = []

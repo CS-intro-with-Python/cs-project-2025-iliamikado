@@ -1,15 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Online Minesweeper</title>
+    <title>Online minesweeper</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>💣 Online Minesweeper</h1>
 
-    <canvas id="board" width="640" height="640"></canvas>
+<div class="header">
+    <h1>💣 Online minesweeper</h1>
+</div>
 
-    <script src="{{ url_for('static', filename='game.js') }}"></script>
+<div class="layout">
+
+    <div class="board-container">
+        <canvas id="board"></canvas>
+    </div>
+
+    <div class="sidebar">
+        <h2>Statistics</h2>
+        <div id="stats">
+            <p>Opened: <span id="openedCount">0</span></p>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
 </html>
