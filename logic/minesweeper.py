@@ -74,6 +74,6 @@ class Minesweeper:
     def field(self):
         field = []
         for cell in self.cells.values():
-            if cell.opened:
+            if cell.opened or cell.flag:
                 field.append(cell.to_json())
         return field
