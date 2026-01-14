@@ -14,55 +14,40 @@ let dragMoved = false;
 let lastMouseX = 0;
 let lastMouseY = 0;
 
+const socket = io();
+
+socket.on("connect", () => {
+    console.log("connected");
+});
+
+socket.on("full_board", (data) => {
+    cells = {};
+    data.forEach(cell => {
+        cells[key(cell.x, cell.y)] = cell;
+    });
+    drawBoard();
+});
+
+socket.on("cells_update", (data) => {
+    data.forEach(cell => {
+        cells[key(cell.x, cell.y)] = cell;
+    });
+    drawBoard();
+});
+
 function key(x, y) {
     return `${x},${y}`;
 }
 
-async function loadAllCells() {
-    const res = await fetch("/board");
-    console.log(res)
-    const data = await res.json();
-    console.log(data)
-
-    data.forEach(cell => {
-        cells[key(cell.x, cell.y)] = cell;
-    });
-
-    drawBoard();
-}
-
 async function clickCell(x, y) {
     console.log(x, y)
-    const res = await fetch("/click", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({x, y})
-    });
-
-    const newlyOpened = await res.json();
-
-    newlyOpened.forEach(cell => {
-        cells[key(cell.x, cell.y)] = cell;
-    });
-
-    drawBoard();
+    socket.emit("click_cell", {x, y});
 }
 
 async function flagCell(x, y) {
     console.log(x, y)
-    const res = await fetch("/flag", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({x, y})
-    });
-
-    const cell = await res.json();
-    cells[key(cell.x, cell.y)] = cell;
-
-    drawBoard();
+    socket.emit("flag_cell", {x, y});
 }
-
-
 
 function drawBoard() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,17 +138,11 @@ canvas.addEventListener("mousedown", (e) => {
     flagCell(x, y);
 });
 
-
-
 window.addEventListener("keydown", (e) => {
     if (e.key.toLowerCase() === "r") {
-        fetch("/reset", {method: "POST"});
-        cells = {};
-        drawBoard();
+        socket.emit("reset_game");
     }
 });
-
-loadAllCells();
 
 function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
@@ -183,7 +162,6 @@ canvas.addEventListener("mousedown", (e) => {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
 });
-
 
 window.addEventListener("mouseup", () => {
     isDragging = false;

@@ -1,8 +1,11 @@
 FROM python:3.11-slim
+
 WORKDIR /app
+
 COPY . /app
 
-# ENV FLASK_RUN_RELOAD=true
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt
-CMD ["flask", "--app", "server.py", "run", "-h", "0.0.0.0", "-p", "5000"]
+EXPOSE 5000
+
+CMD ["python", "server.py"]
