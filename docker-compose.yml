@@ -10,7 +10,6 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/minesweeper
-      FLASK_ENV: development
     volumes:
       - .:/app
 
