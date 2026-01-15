@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Minesweeper{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div id="alert-div" class="alert-div"></div>
+
+<header class="header">
+    <div class="header-left">
+        <div class="logo">💣</div>
+        <div class="title">Online Minesweeper</div>
+    </div>
+
+    <div class="header-right">
+        {% if user %}
+            <span class="username">{{ user }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Sign in/Sign up</a>
+        {% endif %}
+    </div>
+</header>
+
+<main class="main">
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

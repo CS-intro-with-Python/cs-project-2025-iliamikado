@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Game | Minesweeper{% endblock %}
+
+{% block content %}
+<div class="game-layout">
+    <div class="game-board">
+        <canvas id="board"></canvas>
+    </div>
+
+    <div class="game-sidebar">
+        <h3>Stats</h3>
+        <p>Mines: ?</p>
+        <p>Flags: ?</p>
+    </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='game.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: minesweeper_web
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/minesweeper
+      FLASK_ENV: development
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:16
+    container_name: minesweeper_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: minesweeper
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:

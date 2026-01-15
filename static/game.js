@@ -14,13 +14,17 @@ let dragMoved = false;
 let lastMouseX = 0;
 let lastMouseY = 0;
 
-const socket = io();
+window.socket = io();
 
 socket.on("connect", () => {
     console.log("connected");
 });
 
-socket.on("full_board", (data) => {
+socket.on("error", (data) => {
+    showAlert(data.error);
+});
+
+socket.on("board_redraw", (data) => {
     cells = {};
     data.forEach(cell => {
         cells[key(cell.x, cell.y)] = cell;
@@ -28,7 +32,7 @@ socket.on("full_board", (data) => {
     drawBoard();
 });
 
-socket.on("cells_update", (data) => {
+socket.on("board_update", (data) => {
     data.forEach(cell => {
         cells[key(cell.x, cell.y)] = cell;
     });
@@ -185,3 +189,18 @@ window.addEventListener("mousemove", (e) => {
 
     drawBoard();
 });
+
+function showAlert(message) {
+    const alertDiv = document.querySelector("#alert-div");
+    alertDiv.textContent = message;
+    alertDiv.style.display = "block";
+    alertDiv.style.opacity = "1";
+
+    setTimeout(() => {
+        alertDiv.style.opacity = "0";
+
+        setTimeout(() => {
+            alertDiv.style.display = "none";
+        }, 500);
+    }, 1000);
+}
