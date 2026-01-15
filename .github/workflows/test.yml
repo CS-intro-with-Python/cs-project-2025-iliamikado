@@ -21,6 +21,15 @@ jobs:
       - name: Build and start docker-compose
         run: docker compose up -d --build
 
+      - name: List running containers
+        run: docker ps
+
+      - name: Check server
+        run: docker exec minesweeper_web curl -s http://localhost:5000
+
+      - name: Show web logs
+        run: docker logs minesweeper_web
+
       - name: Wait for web server
         run: |
           for i in {1..30}; do
