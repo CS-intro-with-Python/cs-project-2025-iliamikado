@@ -24,6 +24,9 @@ jobs:
       - name: Wait for web server
         run: sleep 3
 
+      - name: Run unit tests
+        run: docker exec minesweeper_web python -m unittest -v
+
       - name: Run integration tests
         run: python client.py
 
