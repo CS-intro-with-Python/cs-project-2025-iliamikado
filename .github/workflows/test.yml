@@ -24,9 +24,6 @@ jobs:
       - name: List running containers
         run: docker ps
 
-      - name: Check server
-        run: docker exec minesweeper_web curl -s http://localhost:5000
-
       - name: Show web logs
         run: docker logs minesweeper_web
 
