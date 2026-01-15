@@ -5,6 +5,7 @@ from logic.minesweeper import Minesweeper
 from logic.statistics import opened_cells, opened_mine, get_users
 from db.models import db, User
 from logger.logger import setup_logging
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 setup_logging(app)
@@ -23,6 +24,14 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    "/swagger",
+    "/static/swagger.yaml",
+    config={"app_name": "Multiplayer Minesweeper"}
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix="/swagger")
 
 game = Minesweeper()
 
@@ -71,8 +80,8 @@ def register():
     except Exception:
         app.logger.exception("Failed registration")
         return jsonify({
-            "status": "error"
-        })
+            "error": "db error"
+        }), 400
 
 
     return jsonify({

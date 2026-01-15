@@ -1,43 +1,60 @@
 # CS_2024_project
 
-Deployed on [cs-project-2025-iliamikado-production.up.railway.app](cs-project-2025-iliamikado-production.up.railway.app)
-
 ## Description
 
 ### Multiplayer Minesweeper
 
-Every new day, a game will be created and anyone can play. \
-The board is "infinite"—new squares are generated as they are discovered. \
-A leaderboard displays how many squares each player has discovered. \
-If someone discovers a mine, they die (cannot play the game anymore, or for a certain period of time), and a crater forms on the board. \
-The players' goal is to discover as many squares as possible, make a minimum of mistakes, and reach the top of the leaderboard.
+Multiplayer Minesweeper is an online multiplayer version
+of the classic Minesweeper, where multiple players play
+simultaneously on the same field and compete for the best score
+in real time.
 
 ## Setup and run
-Describe the steps to set up the environment and run the application. This can be a bash script or docker commands.
 
+Build container:
 ```
-pip install -r requirements.txt
-python ./server.py
+docker compose build
+```
+
+Run container:
+```
+docker compose up
 ```
 
 ## Requirements
+requests\
+Flask~=3.1.2\
+flask-socketio\
+eventlet\
+flask-sqlalchemy\
+psycopg2-binary\
 
-requests, Flask
+Can be installed via
+```
+pip install requirements.txt
+```
+
+Not required if you launch using docker.
 
 ## Features
 
-Describe the main features the application performs.
-
-* Feature 1
-* Feature 2
+* Co-op Play\
+Multiple players connect to the same game and open cells on a shared board.
+* Real-time\
+All player actions are instantly synchronized between clients: opening cells, detonating mines, and updating statistics.
+* Player List\
+A current list of players with their statistics is displayed to the right of the game board
+* Scoring System\
+Points are calculated based on your game performance, advancing you on the leaderboard.
 
 ## Git
-branch master will store the latest stable version
+branch main will store the latest stable version
 
 ## Success Criteria
 
-Describe the criteria by which the success of the project can be determined
-(this will be updated in the future)
-
-* Criteria 1
+* Minesweeper logic
+* Multiplayer using web sockets
+* Statistics
+* Users authorisation
+* UI for game field
 

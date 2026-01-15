@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: Multiplayer Minesweeper API
+  description: |
+    Backend API for Multiplayer Minesweeper game.
+  version: 1.0.0
+
+tags:
+  - name: Auth
+    description: Authentication and user management
+  - name: Game
+    description: Game-related endpoints
+  - name: WebSocket
+    description: |
+      Socket.IO events.
+      
+      ---
+      ### Client → Server
+      - `click_cell`
+      - `flag_cell`
+      - `reset_game`
+      
+      ---
+      ### Server → Client
+      - `board_redraw`
+      - `board_update`
+      - `update_players`
+      - `error`
+
+paths:
+
+  /api/register:
+    post:
+      tags: [Auth]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login:
+                  type: string
+                  example: player1
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        "200":
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSuccess"
+        "400":
+          description: Validation error or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/login:
+    post:
+      tags: [Auth]
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [login, password]
+              properties:
+                login:
+                  type: string
+                  example: player1
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSuccess"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /logout:
+    get:
+      tags: [Auth]
+      summary: Logout current user
+      responses:
+        "302":
+          description: Redirect to main page
+        "400":
+          description: Not authorized
+
+  /:
+    get:
+      tags: [Game]
+      summary: Main game page
+      responses:
+        "200":
+          description: HTML game page
+
+  /login:
+    get:
+      tags: [Auth]
+      summary: Login page
+      responses:
+        "200":
+          description: HTML login page
+
+  /ws/click_cell:
+    post:
+      tags: [ WebSocket ]
+      summary: Socket.IO event `click_cell`
+      description: |
+        User clicks a cell on the board.
+
+        **Emits:** `click_cell`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ x, y ]
+              properties:
+                x:
+                  type: integer
+                  example: 2
+                y:
+                  type: integer
+                  example: 4
+      responses:
+        "200":
+          description: Virtual endpoint (WebSocket)
+
+  /ws/flag_cell:
+    post:
+      tags: [ WebSocket ]
+      summary: Socket.IO event `flag_cell`
+      description: |
+        User places or removes a flag.
+
+        **Emits:** `flag_cell`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ x, y ]
+              properties:
+                x:
+                  type: integer
+                y:
+                  type: integer
+      responses:
+        "200":
+          description: Virtual endpoint (WebSocket)
+
+  /ws/reset_game:
+    post:
+      tags: [ WebSocket ]
+      summary: Socket.IO event `reset_game`
+      description: |
+        Reset the game (admin only).
+
+        **Emits:** `reset_game`
+      responses:
+        "200":
+          description: Virtual endpoint (WebSocket)
+
+  /ws/board_redraw:
+    post:
+      tags: [ WebSocket ]
+      summary: Server event `board_redraw`
+      description: |
+        Sent to client after connection or game reset.
+
+        **Listens:** `board_redraw`
+      responses:
+        "200":
+          description: Full board state
+
+  /ws/board_update:
+    post:
+      tags: [ WebSocket ]
+      summary: Server event `board_update`
+      description: |
+        Sent when cells are opened or flagged.
+
+        **Listens:** `board_update`
+      responses:
+        "200":
+          description: Updated cells
+
+  /ws/update_players:
+    post:
+      tags: [ WebSocket ]
+      summary: Server event `update_players`
+      description: |
+        Updates player statistics sidebar.
+
+        **Listens:** `update_players`
+      responses:
+        "200":
+          description: Players list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    login:
+                      type: string
+                    opened_cells:
+                      type: integer
+                    opened_mines:
+                      type: integer
+                    score:
+                      type: integer
+
+  /ws/error:
+    post:
+      tags: [ WebSocket ]
+      summary: Server event `error`
+      description: |
+        Error message from server.
+
+        **Listens:** `error`
+      responses:
+        "200":
+          description: Error payload
+
+components:
+  schemas:
+
+    AuthSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            login:
+              type: string
+              example: player1
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: invalid credentials

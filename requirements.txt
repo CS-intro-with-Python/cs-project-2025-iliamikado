@@ -4,3 +4,4 @@ flask-socketio
 eventlet
 flask-sqlalchemy
 psycopg2-binary
+flask_swagger_ui
