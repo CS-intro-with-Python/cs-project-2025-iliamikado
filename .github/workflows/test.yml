@@ -32,6 +32,9 @@ jobs:
             sleep 1
           done
 
+      - name: Echo logs
+        run: cat app.log
+
       - name: Run integration tests
         run: python client.py
 
