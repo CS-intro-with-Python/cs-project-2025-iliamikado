@@ -12,6 +12,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/minesweeper
     volumes:
       - .:/app
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "server.py"]
 
   db:
     image: postgres:16

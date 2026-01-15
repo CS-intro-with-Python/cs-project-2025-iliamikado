@@ -28,15 +28,10 @@ jobs:
         run: docker logs minesweeper_web
 
       - name: Wait for web server
-        run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:5000 > /dev/null; then
-              echo "Server is up"
-              break
-            fi
-            echo "Waiting for server..."
-            sleep 1
-          done
+        run: sleep 3
+
+      - name: Show web logs
+        run: docker logs minesweeper_web
 
       - name: Echo logs
         run: cat app.log
