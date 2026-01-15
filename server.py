@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_socketio import SocketIO, emit
 from logic.minesweeper import Minesweeper
+from logic.statistics import opened_cells, opened_mine, get_users
 from db.models import db, User
 from logger.logger import setup_logging
 
@@ -127,6 +128,9 @@ def logout():
 def on_connect():
     emit("board_redraw", game.field())
 
+    players = get_users(game.uuid)
+    emit("update_players", players, broadcast=True)
+
 @socketio.on("click_cell")
 def click_cell(data):
     if "user_id" not in session:
@@ -136,7 +140,15 @@ def click_cell(data):
 
     app.logger.info("%s pressed on %d, %d", session["user_login"], x, y)
     opened = game.open(x, y)
+    if opened[0]["mine"]:
+        opened_mine(session["user_id"], game.uuid)
+    else:
+        opened_cells(session["user_id"], len(opened), game.uuid)
+
     emit("board_update", opened, broadcast=True)
+
+    players = get_users(game.uuid)
+    emit("update_players", players)
 
 
 @socketio.on("flag_cell")
@@ -160,4 +172,4 @@ def reset_game():
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    socketio.run(app, host="0.0.0.0", port=5000, debug=False)

@@ -8,8 +8,8 @@ def setup_logging(app):
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
 
-    # for h in list(root_logger.handlers):
-    #     root_logger.removeHandler(h)
+    for h in list(root_logger.handlers):
+        root_logger.removeHandler(h)
 
     file_handler = logging.FileHandler("app.log", mode='w')
     file_handler.setFormatter(formatter)

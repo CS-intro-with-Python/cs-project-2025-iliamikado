@@ -21,20 +21,8 @@ jobs:
       - name: Build and start docker-compose
         run: docker compose up -d --build
 
-      - name: List running containers
-        run: docker ps
-
-      - name: Show web logs
-        run: docker logs minesweeper_web
-
       - name: Wait for web server
         run: sleep 3
-
-      - name: Show web logs
-        run: docker logs minesweeper_web
-
-      - name: Echo logs
-        run: cat app.log
 
       - name: Run integration tests
         run: python client.py

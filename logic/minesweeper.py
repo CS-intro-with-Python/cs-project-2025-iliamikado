@@ -1,4 +1,5 @@
 import random
+import uuid
 
 class Cell:
     def __init__(self, x, y):
@@ -25,6 +26,7 @@ class Minesweeper:
         self.mine_chance = mine_chance
         self.cells = {}
         self.initialized = False
+        self.uuid = str(uuid.uuid4())
 
     def _set_cell(self, x, y):
         if (x, y) not in self.cells:

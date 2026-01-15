@@ -204,3 +204,35 @@ function showAlert(message) {
         }, 500);
     }, 1000);
 }
+
+socket.on("update_players", (players) => {
+    const list = document.getElementById("players-list");
+    list.innerHTML = "";
+
+    players.forEach(player => {
+        const li = document.createElement("li");
+
+        const infoDiv = document.createElement("div");
+        infoDiv.classList.add("player-info");
+
+        const loginDiv = document.createElement("div");
+        loginDiv.classList.add("player-login");
+        loginDiv.textContent = player.login;
+
+        const scoreDiv = document.createElement("div");
+        scoreDiv.classList.add("player-score");
+        scoreDiv.textContent = `Score: ${player.score}`;
+
+        infoDiv.appendChild(loginDiv);
+        infoDiv.appendChild(scoreDiv);
+
+        const statsDiv = document.createElement("div");
+        statsDiv.classList.add("player-stats");
+        statsDiv.textContent = `Cells: ${player.opened_cells}, Mines: ${player.opened_mines}`;
+
+        li.appendChild(infoDiv);
+        li.appendChild(statsDiv);
+
+        list.appendChild(li);
+    });
+});
